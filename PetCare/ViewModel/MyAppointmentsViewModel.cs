@@ -78,6 +78,21 @@ namespace PetCare.ViewModel
         }
 
         [RelayCommand]
+        private async Task ViewAppointmentAsync(AppointmentDisplay item)
+        {
+            if (item == null) return;
+
+            string details = $"Patient: {item.PetName}\n" +
+                             $"Service: {item.Appointment.ServiceType}\n" +
+                             $"Date: {item.Appointment.DateTime:MMM dd, yyyy}\n" +
+                             $"Time: {item.Appointment.DateTime:hh:mm tt}\n" +
+                             $"Status: {item.Appointment.Status}\n\n" +
+                             $"Notes: {item.Appointment.Notes ?? "No notes available."}";
+
+            await Shell.Current.DisplayAlert("Appointment Details", details, "Close");
+        }
+
+        [RelayCommand]
         private async Task BookNewVisitAsync()
         {
             await Shell.Current.GoToAsync("BookAppointment");

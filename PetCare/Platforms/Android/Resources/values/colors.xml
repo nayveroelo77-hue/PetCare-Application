@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#512BD4</color>
-    <color name="colorPrimaryDark">#2B0B98</color>
-    <color name="colorAccent">#2B0B98</color>
+    <!-- Updated to match app orange theme from design -->
+    <color name="colorPrimary">#FF8200</color>
+    <color name="colorPrimaryDark">#E66A00</color>
+    <color name="colorAccent">#FF6A00</color>
 </resources>

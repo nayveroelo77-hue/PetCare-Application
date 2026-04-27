@@ -21,22 +21,42 @@
 
     <Grid>
         <ScrollView>
-            <VerticalStackLayout Padding="25,40" Spacing="25">
-                
-                <Label Text="My Visits" FontSize="32" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
-                <Label Text="Track and manage your pet's clinic appointments" TextColor="{StaticResource TextGray}" FontSize="15" FontFamily="PoppinsRegular" Margin="0,-15,0,0" />
+            <VerticalStackLayout Padding="25,40"
+                                 Spacing="25">
 
-                <RefreshView Command="{Binding LoadAppointmentsCommand}" IsRefreshing="{Binding IsBusy}">
+                <Label Text="My Visits"
+                       FontSize="32"
+                       FontFamily="PoppinsBold"
+                       TextColor="{StaticResource TextDark}"/>
+                <Label Text="Track and manage your pet's clinic appointments"
+                       TextColor="{StaticResource TextGray}"
+                       FontSize="15"
+                       FontFamily="PoppinsRegular"
+                       Margin="0,-15,0,0"/>
+
+                <RefreshView Command="{Binding LoadAppointmentsCommand}"
+                             IsRefreshing="{Binding IsBusy}">
                     <CollectionView ItemsSource="{Binding ClientAppointments}">
                         <CollectionView.EmptyView>
-                            <VerticalStackLayout Padding="100" Spacing="20" HorizontalOptions="Center">
-                                <Label Text="📅" FontSize="60" HorizontalOptions="Center" Opacity="0.2" />
-                                <Label Text="No appointments scheduled." TextColor="{StaticResource TextGray}" FontFamily="PoppinsBold" FontSize="18" HorizontalTextAlignment="Center" />
+                            <VerticalStackLayout Padding="100"
+                                                 Spacing="20"
+                                                 HorizontalOptions="Center">
+                                <Label Text="📅"
+                                       FontSize="60"
+                                       HorizontalOptions="Center"
+                                       Opacity="0.2"/>
+                                <Label Text="No appointments scheduled."
+                                       TextColor="{StaticResource TextGray}"
+                                       FontFamily="PoppinsBold"
+                                       FontSize="18"
+                                       HorizontalTextAlignment="Center"/>
                             </VerticalStackLayout>
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="15" />
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="1"
+                                             VerticalItemSpacing="15"/>
                         </CollectionView.ItemsLayout>
 
                         <CollectionView.ItemTemplate>
@@ -45,44 +65,105 @@
                                     <SwipeView.RightItems>
                                         <SwipeItems>
                                             <SwipeItem Text="Cancel"
-                                                      BackgroundColor="#D32F2F"
-                                                      IsDestructive="True"
-                                                      IsVisible="{Binding IsCancellable}"
-                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=CancelAppointmentCommand}"
-                                                      CommandParameter="{Binding .}" />
+                                                       BackgroundColor="#D32F2F"
+                                                       IsDestructive="True"
+                                                       IsVisible="{Binding IsCancellable}"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=CancelAppointmentCommand}"
+                                                       CommandParameter="{Binding .}"/>
                                         </SwipeItems>
                                     </SwipeView.RightItems>
 
-                                    <Frame BackgroundColor="White" CornerRadius="24" Padding="20" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                                    <Frame BackgroundColor="White"
+                                           CornerRadius="24"
+                                           Padding="20"
+                                           HasShadow="True"
+                                           BorderColor="{StaticResource BorderOrange}">
                                         <VerticalStackLayout Spacing="10">
                                             <Grid ColumnDefinitions="Auto, *, Auto">
-                                                <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="12" HasShadow="False" BorderColor="Transparent" BackgroundColor="#FDF5E6" Margin="0,0,15,0">
-                                                    <Label Text="{Binding StatusIcon}" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                <Frame HeightRequest="50"
+                                                       WidthRequest="50"
+                                                       CornerRadius="25"
+                                                       Padding="12"
+                                                       HasShadow="False"
+                                                       BorderColor="Transparent"
+                                                       BackgroundColor="#FDF5E6"
+                                                       Margin="0,0,15,0">
+                                                    <Label Text="{Binding StatusIcon}"
+                                                           FontSize="18"
+                                                           HorizontalOptions="Center"
+                                                           VerticalOptions="Center"/>
                                                 </Frame>
 
-                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
-                                                    <Label Text="{Binding PetName}" FontSize="18" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
-                                                    <Label Text="{Binding Appointment.ServiceType}" FontSize="12" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
-                                                    <Label Text="{Binding Appointment.DateTime, StringFormat='{0:MMM dd, yyyy - hh:mm tt}'}" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsSemibold" Opacity="0.8" />
+                                                <VerticalStackLayout Grid.Column="1"
+                                                                     VerticalOptions="Center"
+                                                                     Spacing="2">
+                                                    <Label Text="{Binding PetName}"
+                                                           FontSize="18"
+                                                           FontFamily="PoppinsBold"
+                                                           TextColor="{StaticResource TextDark}"/>
+                                                    <Label Text="{Binding Appointment.ServiceType}"
+                                                           FontSize="12"
+                                                           TextColor="{StaticResource TextGray}"
+                                                           FontFamily="PoppinsRegular"/>
+                                                    <Label Text="{Binding Appointment.DateTime, StringFormat='{0:MMM dd, yyyy - hh:mm tt}'}"
+                                                           FontSize="11"
+                                                           TextColor="{StaticResource TextGray}"
+                                                           FontFamily="PoppinsSemibold"
+                                                           Opacity="0.8"/>
+                                                    <Label Text="{Binding Appointment.Notes}"
+                                                           FontSize="12"
+                                                           TextColor="{StaticResource TextGray}"
+                                                           FontFamily="PoppinsRegular"
+                                                           IsVisible="{Binding HasNotes}"
+                                                           Margin="0,6,0,0"
+                                                           LineBreakMode="WordWrap"
+                                                           MaxLines="3"/>
                                                 </VerticalStackLayout>
 
-                                                <Frame Grid.Column="2" BackgroundColor="{StaticResource CreamWhite}" Padding="10,6" CornerRadius="12" HasShadow="False" BorderColor="Transparent" VerticalOptions="Center">
-                                                    <Label Text="{Binding StatusLabel}" FontSize="10" FontFamily="PoppinsBold" TextColor="{Binding StatusColor}" HorizontalOptions="Center" />
+                                                <Frame Grid.Column="2"
+                                                       BackgroundColor="{StaticResource CreamWhite}"
+                                                       Padding="10,6"
+                                                       CornerRadius="12"
+                                                       HasShadow="False"
+                                                       BorderColor="Transparent"
+                                                       VerticalOptions="Center">
+                                                    <Label Text="{Binding StatusLabel}"
+                                                           FontSize="10"
+                                                           FontFamily="PoppinsBold"
+                                                           TextColor="{Binding StatusColor}"
+                                                           HorizontalOptions="Center"/>
                                                 </Frame>
                                             </Grid>
 
                                             <!-- Cancel button for cancellable appointments -->
-                                            <Button Text="Cancel Appointment"
-                                                    IsVisible="{Binding IsCancellable}"
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=CancelAppointmentCommand}"
-                                                    CommandParameter="{Binding .}"
-                                                    BackgroundColor="#FFE5E5"
-                                                    TextColor="#D32F2F"
-                                                    FontFamily="PoppinsSemibold"
-                                                    FontSize="12"
-                                                    CornerRadius="12"
-                                                    HeightRequest="38"
-                                                    HorizontalOptions="End" />
+                                            <HorizontalStackLayout Spacing="8"
+                                                    HorizontalOptions="Fill"
+                                                    Margin="0,0,0,0">
+                                                <Button Text="View Details"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=ViewAppointmentCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="White"
+                                                        BorderColor="{StaticResource PrimaryOrange}"
+                                                        BorderWidth="1"
+                                                        TextColor="{StaticResource PrimaryOrange}"
+                                                        FontFamily="PoppinsSemibold"
+                                                        FontSize="12"
+                                                        CornerRadius="12"
+                                                        HeightRequest="38"
+                                                        HorizontalOptions="Start"/>
+
+                                                <Button Text="Cancel Appointment"
+                                                        IsVisible="{Binding IsCancellable}"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=CancelAppointmentCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="#FFE5E5"
+                                                        TextColor="#D32F2F"
+                                                        FontFamily="PoppinsSemibold"
+                                                        FontSize="12"
+                                                        CornerRadius="12"
+                                                        HeightRequest="38"
+                                                        HorizontalOptions="EndAndExpand"/>
+                                            </HorizontalStackLayout>
                                         </VerticalStackLayout>
                                     </Frame>
                                 </SwipeView>
@@ -98,7 +179,7 @@
                         FontFamily="PoppinsBold"
                         CornerRadius="15"
                         Margin="0,15,0,0"
-                        HeightRequest="55" />
+                        HeightRequest="55"/>
 
             </VerticalStackLayout>
         </ScrollView>

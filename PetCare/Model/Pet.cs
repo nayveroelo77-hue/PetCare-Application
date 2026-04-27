@@ -20,5 +20,11 @@ namespace PetCare.Model
         public int OwnerId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Ignore]
+        public string? LatestNotes { get; set; }
+
+        [Ignore]
+        public bool HasAdminNotes => !string.IsNullOrWhiteSpace(LatestNotes);
     }
 }

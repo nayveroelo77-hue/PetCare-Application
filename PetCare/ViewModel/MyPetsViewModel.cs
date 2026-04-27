@@ -29,8 +29,21 @@ namespace PetCare.ViewModel
             try
             {
                 var pets = await _databaseService.GetPetsByOwnerIdAsync(_authService.UserId);
+                // get related appointments once to derive any admin notes for each pet
+                var appointments = await _databaseService.GetAppointmentsByOwnerIdAsync(_authService.UserId);
+
                 OwnerPets.Clear();
-                foreach (var pet in pets) OwnerPets.Add(pet);
+                foreach (var pet in pets)
+                {
+                    // find most recent appointment for this pet that has notes
+                    var latest = appointments
+                        .Where(a => a.PetId == pet.Id && !string.IsNullOrWhiteSpace(a.Notes))
+                        .OrderByDescending(a => a.DateTime)
+                        .FirstOrDefault();
+
+                    pet.LatestNotes = latest?.Notes;
+                    OwnerPets.Add(pet);
+                }
             }
             catch (Exception ex)
             {

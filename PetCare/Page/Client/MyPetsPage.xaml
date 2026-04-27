@@ -18,35 +18,62 @@
             <Color x:Key="BorderOrange">#FFE4CC</Color>
             <Color x:Key="CreamWhite">#FFF9F2</Color>
 
-            <Style x:Key="PetCardFrame" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="White" />
-                <Setter Property="CornerRadius" Value="24" />
-                <Setter Property="Padding" Value="20" />
-                <Setter Property="HasShadow" Value="True" />
-                <Setter Property="BorderColor" Value="{StaticResource BorderOrange}" />
-                <Setter Property="HeightRequest" Value="280" />
+            <Style x:Key="PetCardFrame"
+                    TargetType="Frame">
+                <Setter Property="BackgroundColor"
+                        Value="White"/>
+                <Setter Property="CornerRadius"
+                        Value="24"/>
+                <Setter Property="Padding"
+                        Value="20"/>
+                <Setter Property="HasShadow"
+                        Value="True"/>
+                <Setter Property="BorderColor"
+                        Value="{StaticResource BorderOrange}"/>
+                <Setter Property="HeightRequest"
+                        Value="280"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid>
         <ScrollView>
-            <VerticalStackLayout Padding="25,40" Spacing="25">
-                
-                <Label Text="My Pets" FontSize="32" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
-                <Label Text="Your registered animal family members" TextColor="{StaticResource TextGray}" FontSize="15" FontFamily="PoppinsRegular" Margin="0,-15,0,0" />
+            <VerticalStackLayout Padding="25,40"
+                    Spacing="25">
 
-                <RefreshView Command="{Binding LoadPetsCommand}" IsRefreshing="{Binding IsBusy}">
+                <Label Text="My Pets"
+                        FontSize="32"
+                        FontFamily="PoppinsBold"
+                        TextColor="{StaticResource TextDark}"/>
+                <Label Text="Your registered animal family members"
+                        TextColor="{StaticResource TextGray}"
+                        FontSize="15"
+                        FontFamily="PoppinsRegular"
+                        Margin="0,-15,0,0"/>
+
+                <RefreshView Command="{Binding LoadPetsCommand}"
+                        IsRefreshing="{Binding IsBusy}">
                     <CollectionView ItemsSource="{Binding OwnerPets}">
                         <CollectionView.EmptyView>
-                            <VerticalStackLayout Padding="100" Spacing="20" HorizontalOptions="Center">
-                                <Label Text="🐾" FontSize="60" HorizontalOptions="Center" Opacity="0.2" />
-                                <Label Text="No pets registered." TextColor="{StaticResource TextGray}" FontFamily="PoppinsBold" FontSize="18" HorizontalTextAlignment="Center" />
+                            <VerticalStackLayout Padding="100"
+                                    Spacing="20"
+                                    HorizontalOptions="Center">
+                                <Label Text="🐾"
+                                        FontSize="60"
+                                        HorizontalOptions="Center"
+                                        Opacity="0.2"/>
+                                <Label Text="No pets registered."
+                                        TextColor="{StaticResource TextGray}"
+                                        FontFamily="PoppinsBold"
+                                        FontSize="18"
+                                        HorizontalTextAlignment="Center"/>
                             </VerticalStackLayout>
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="20" />
+                            <GridItemsLayout Orientation="Vertical"
+                                    Span="1"
+                                    VerticalItemSpacing="20"/>
                         </CollectionView.ItemsLayout>
 
                         <CollectionView.ItemTemplate>
@@ -54,45 +81,100 @@
                                 <SwipeView>
                                     <SwipeView.RightItems>
                                         <SwipeItems>
-                                            <SwipeItem Text="History" 
-                                                      BackgroundColor="#4CAF50"
-                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=ViewHealthRecordCommand}"
-                                                      CommandParameter="{Binding .}" />
-                                            <SwipeItem Text="Edit" 
-                                                      BackgroundColor="{StaticResource PrimaryOrange}"
-                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=EditPetCommand}"
-                                                      CommandParameter="{Binding .}" />
-                                            <SwipeItem Text="Delete" 
-                                                      BackgroundColor="#D32F2F"
-                                                      IsDestructive="True"
-                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=DeletePetCommand}"
-                                                      CommandParameter="{Binding .}" />
+                                            <SwipeItem Text="History"
+                                                       BackgroundColor="#4CAF50"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=ViewHealthRecordCommand}"
+                                                       CommandParameter="{Binding .}"/>
+                                            <SwipeItem Text="Edit"
+                                                       BackgroundColor="{StaticResource PrimaryOrange}"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=EditPetCommand}"
+                                                       CommandParameter="{Binding .}"/>
+                                            <SwipeItem Text="Delete"
+                                                       BackgroundColor="#D32F2F"
+                                                       IsDestructive="True"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=DeletePetCommand}"
+                                                       CommandParameter="{Binding .}"/>
                                         </SwipeItems>
                                     </SwipeView.RightItems>
 
                                     <Frame Style="{StaticResource PetCardFrame}">
-                                        <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
-                                            <Frame HeightRequest="120" WidthRequest="120" CornerRadius="60" Padding="0" HasShadow="False" BorderColor="{StaticResource BorderOrange}" BackgroundColor="{StaticResource CreamWhite}">
-                                                <Image Source="animal_care.png" Margin="25" Aspect="AspectFit" />
+                                        <HorizontalStackLayout Spacing="20"
+                                                VerticalOptions="Center">
+                                            <Frame HeightRequest="120"
+                                                    WidthRequest="120"
+                                                    CornerRadius="60"
+                                                    Padding="0"
+                                                    HasShadow="False"
+                                                    BorderColor="{StaticResource BorderOrange}"
+                                                    BackgroundColor="{StaticResource CreamWhite}">
+                                                <Image Source="animal_care.png"
+                                                        Margin="25"
+                                                        Aspect="AspectFit"/>
                                             </Frame>
 
-                                            <VerticalStackLayout Spacing="5" VerticalOptions="Center">
-                                                <Label Text="{Binding Name}" FontSize="24" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
-                                                <Label Text="{Binding Breed}" FontSize="14" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
-                                                
-                                                <HorizontalStackLayout Spacing="8" Margin="0,10,0,0">
-                                                    <Frame BackgroundColor="{StaticResource BorderOrange}" Padding="10,4" CornerRadius="12" HasShadow="False" BorderColor="Transparent">
-                                                        <Label Text="{Binding Species}" FontSize="10" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" />
+                                            <VerticalStackLayout Spacing="5"
+                                                    VerticalOptions="Center">
+                                                <Label Text="{Binding Name}"
+                                                        FontSize="24"
+                                                        FontFamily="PoppinsBold"
+                                                        TextColor="{StaticResource TextDark}"/>
+                                                <Label Text="{Binding Breed}"
+                                                        FontSize="14"
+                                                        TextColor="{StaticResource TextGray}"
+                                                        FontFamily="PoppinsRegular"/>
+                                                <Label Text="Notes from Clinic:"
+                                                        FontSize="12"
+                                                        TextColor="{StaticResource PrimaryOrange}"
+                                                        FontFamily="PoppinsSemibold"
+                                                        IsVisible="{Binding HasAdminNotes}"
+                                                        Margin="0,6,0,0"/>
+                                                <Label Text="{Binding LatestNotes}"
+                                                        FontSize="12"
+                                                        TextColor="{StaticResource TextGray}"
+                                                        FontFamily="PoppinsRegular"
+                                                        IsVisible="{Binding HasAdminNotes}"
+                                                        Margin="0,2,0,0"
+                                                        LineBreakMode="WordWrap"
+                                                        MaxLines="3"/>
+
+                                                <HorizontalStackLayout Spacing="8"
+                                                        Margin="0,10,0,0">
+                                                    <Frame BackgroundColor="{StaticResource BorderOrange}"
+                                                            Padding="10,4"
+                                                            CornerRadius="12"
+                                                            HasShadow="False"
+                                                            BorderColor="Transparent">
+                                                        <Label Text="{Binding Species}"
+                                                                FontSize="10"
+                                                                FontFamily="PoppinsBold"
+                                                                TextColor="{StaticResource PrimaryOrange}"/>
                                                     </Frame>
-                                                    <Frame BackgroundColor="#F5F5F5" Padding="10,4" CornerRadius="12" HasShadow="False" BorderColor="Transparent">
-                                                        <Label Text="{Binding Age, StringFormat='{0} YRS'}" FontSize="10" FontFamily="PoppinsBold" TextColor="#BDBDBD" />
+                                                    <Frame BackgroundColor="#F5F5F5"
+                                                            Padding="10,4"
+                                                            CornerRadius="12"
+                                                            HasShadow="False"
+                                                            BorderColor="Transparent">
+                                                        <Label Text="{Binding Age, StringFormat='{0} YRS'}"
+                                                                FontSize="10"
+                                                                FontFamily="PoppinsBold"
+                                                                TextColor="#BDBDBD"/>
                                                     </Frame>
                                                 </HorizontalStackLayout>
 
-                                                <Button Text="View Health Records" 
+                                                <Button Text="View Health Records"
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyPetsViewModel}}, Path=ViewHealthRecordCommand}"
                                                         CommandParameter="{Binding .}"
-                                                        Margin="0,15,0,0" CornerRadius="12" BackgroundColor="White" BorderColor="{StaticResource PrimaryOrange}" BorderWidth="1" TextColor="{StaticResource PrimaryOrange}" FontFamily="PoppinsSemibold" FontSize="12" HeightRequest="40" Padding="15,0" HorizontalOptions="Start" />
+                                                        Margin="0,15,0,0"
+                                                        CornerRadius="12"
+                                                        BackgroundColor="White"
+                                                        BorderColor="{StaticResource PrimaryOrange}"
+                                                        BorderWidth="1"
+                                                        TextColor="{StaticResource PrimaryOrange}"
+                                                        FontFamily="PoppinsSemibold"
+                                                        FontSize="12"
+                                                        HeightRequest="40"
+                                                        Padding="15,0"
+                                                        HorizontalOptions="Start"/>
                                             </VerticalStackLayout>
                                         </HorizontalStackLayout>
                                     </Frame>
@@ -102,13 +184,13 @@
                     </CollectionView>
                 </RefreshView>
 
-                <Button Text="+ Register New Pet" 
+                <Button Text="+ Register New Pet"
                         Command="{Binding AddPetCommand}"
-                        BackgroundColor="{StaticResource PrimaryOrange}" 
-                        TextColor="White" 
-                        FontFamily="PoppinsBold" 
-                        CornerRadius="15" 
-                        HeightRequest="55" 
+                        BackgroundColor="{StaticResource PrimaryOrange}"
+                        TextColor="White"
+                        FontFamily="PoppinsBold"
+                        CornerRadius="15"
+                        HeightRequest="55"
                         Margin="0,10,0,20"/>
 
             </VerticalStackLayout>
