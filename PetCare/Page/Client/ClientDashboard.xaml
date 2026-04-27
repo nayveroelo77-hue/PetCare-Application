@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PetCare.Page.Client.ClientDashboard"
+             x:DataType="vm:ClientDashboardViewModel"
+             Title="My Pet Dashboard"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Same core colors as Admin -->
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+            <Color x:Key="CreamWhite">#FFF9F2</Color>
+
+            <Style x:Key="StatFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="Padding" Value="15" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BorderColor" Value="{StaticResource BorderOrange}" />
+            </Style>
+
+            <Style x:Key="ActivityFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="Padding" Value="20" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BorderColor" Value="{StaticResource BorderOrange}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25,40" Spacing="30">
+            
+            <!-- Welcome Header -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="{Binding WelcomeMessage}" FontSize="28" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                <Label Text="Your pet's health summary at a glance" TextColor="{StaticResource TextGray}" FontSize="14" FontFamily="PoppinsRegular" />
+            </VerticalStackLayout>
+
+            <!-- Stats Grid -->
+            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="15" RowSpacing="15">
+                <Frame Style="{StaticResource StatFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Label Text="🐾" FontSize="24" HorizontalOptions="Center" />
+                        <Label Text="My Pets" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalPets}" FontSize="22" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="1" Style="{StaticResource StatFrame}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Label Text="📅" FontSize="24" HorizontalOptions="Center" />
+                        <Label Text="Upcoming" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" HorizontalOptions="Center" />
+                        <Label Text="{Binding UpcomingAppointments}" FontSize="22" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource StatFrame}" Padding="20,15">
+                    <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                        <Frame HeightRequest="45" WidthRequest="45" CornerRadius="22" BackgroundColor="#FFF5E6" Padding="0" HasShadow="False" BorderColor="Transparent">
+                            <Label Text="⏳" FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout VerticalOptions="Center">
+                            <Label Text="Pending Approvals" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                            <Label Text="{Binding PendingAppointments}" FontSize="18" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- Quick Access Navigation Buttons -->
+            <Label Text="QUICK ACTIONS" FontSize="10" FontFamily="PoppinsBold" TextColor="{StaticResource TextGray}" Opacity="0.6" CharacterSpacing="1" />
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                <Button Text="My Pets" Command="{Binding NavigateCommand}" CommandParameter="///MyPetsPage"
+                        BackgroundColor="White" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" CornerRadius="15" BorderColor="{StaticResource BorderOrange}" BorderWidth="1" HeightRequest="50" />
+                <Button Grid.Column="1" Text="New Appointment" Clicked="OnNewAppointmentClicked"
+                        BackgroundColor="{StaticResource PrimaryOrange}" TextColor="White" FontFamily="PoppinsBold" CornerRadius="15" HeightRequest="50" />
+            </Grid>
+
+            <!-- Recent Activity / Appointments -->
+            <Label Text="RECENT VISITS" FontSize="10" FontFamily="PoppinsBold" TextColor="{StaticResource TextGray}" Opacity="0.6" CharacterSpacing="1" />
+            <Frame Style="{StaticResource ActivityFrame}" Padding="5">
+                <VerticalStackLayout>
+                    <CollectionView ItemsSource="{Binding RecentVisits}" HeightRequest="300">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Padding="40" Spacing="15">
+                                <Label Text="📅" FontSize="40" HorizontalOptions="Center" Opacity="0.2" />
+                                <Label Text="No recent activity yet." TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" FontSize="13" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:AppointmentDisplay">
+                                <Grid ColumnDefinitions="Auto, *, Auto" Padding="15, 12">
+                                    <Frame HeightRequest="40" WidthRequest="40" CornerRadius="20" BackgroundColor="#FDF5E6" Padding="0" HasShadow="False" BorderColor="Transparent" Margin="0,0,12,0">
+                                        <Image Source="calendar_icon.png" Margin="10" Aspect="AspectFit" />
+                                    </Frame>
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding PetName}" FontSize="14" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                                        <Label Text="{Binding Appointment.ServiceType}" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="2" VerticalOptions="Center" HorizontalOptions="End">
+                                        <Label Text="{Binding Appointment.DateTime, StringFormat='{0:MMM dd}'}" FontSize="12" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" HorizontalOptions="End" />
+                                        <Label Text="{Binding StatusLabel}" FontSize="9" TextColor="{Binding StatusColor}" FontFamily="PoppinsBold" HorizontalOptions="End" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- My Pets Summary Preview -->
+            <Label Text="MY FAMILIARS" FontSize="10" FontFamily="PoppinsBold" TextColor="{StaticResource TextGray}" Opacity="0.6" CharacterSpacing="1" />
+            <Frame Style="{StaticResource ActivityFrame}">
+                <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
+                    <Frame HeightRequest="60" WidthRequest="60" CornerRadius="30" BackgroundColor="{StaticResource CreamWhite}" Padding="0" HasShadow="False" BorderColor="{StaticResource BorderOrange}">
+                        <Image Source="animal_care.png" Margin="15" Aspect="AspectFit" />
+                    </Frame>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Manage Your Pets" FontSize="16" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                        <Label Text="View health records and update info" FontSize="12" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="2" Text="➔" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20" TextColor="{StaticResource PrimaryOrange}" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="///MyPetsPage" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

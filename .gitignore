@@ -1,0 +1,49 @@
+## Visual Studio ##
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## .NET ##
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## MAUI / Mobile Specific ##
+# Android
+*.apk
+*.aab
+*.dex
+
+# iOS / Mac
+[Dd]erived[Dd]ata/
+[Bb]uild/
+*.hmap
+*.ipa
+*.ext.appex.zip
+*.ext.appex
+
+## SQLite ##
+*.db3
+*.db3-journal
+*.db3-shm
+*.db3-wal
+
+## OS Specific ##
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## Logs and temp ##
+*.log
+*.tmp
+*.temp

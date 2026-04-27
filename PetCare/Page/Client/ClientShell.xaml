@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PetCare.Page.Client.ClientShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PetCare.Page.Client"
+    Title="PetCare - Client"
+    Shell.NavBarIsVisible="False">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Style TargetType="TabBar">
+                <Setter Property="Shell.TabBarBackgroundColor" Value="White" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource PrimaryOrange}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#999999" />
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource PrimaryOrange}" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar>
+        <Tab Title="Dashboard">
+            <Tab.Icon>
+                <FileImageSource File="tab_dashboard.png" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate local:ClientDashboard}" Route="ClientDashboard" />
+        </Tab>
+        <Tab Title="My Pets">
+            <Tab.Icon>
+                <FileImageSource File="tab_pets.png" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate local:MyPetsPage}" Route="MyPetsPage" />
+        </Tab>
+        <Tab Title="Visits">
+            <Tab.Icon>
+                <FileImageSource File="tab_visits.png" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate local:MyAppointmentsPage}" Route="MyAppointmentsPage" />
+        </Tab>
+        <Tab Title="Guides">
+            <Tab.Icon>
+                <FileImageSource File="animal_care.png" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate local:CareGuidesPage}" Route="CareGuidesPage" />
+        </Tab>
+        <Tab Title="Profile">
+            <Tab.Icon>
+                <FileImageSource File="tab_profile.png" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate local:ClientProfilePage}" Route="ClientProfilePage" />
+        </Tab>
+    </TabBar>
+
+</Shell>

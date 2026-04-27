@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converter="clr-namespace:PetCare.Converter"
+             x:Class="PetCare.Page.Admin.AdminDashboard"
+             x:DataType="vm:AdminDashboardViewModel"
+             Title="Dashboard"
+             BackgroundColor="#FFF9F2">
+
+    <ContentPage.Resources>
+        <converter:DoubleToHeightConverter x:Key="DoubleToHeightConverter" />
+        <toolkit:IsEqualConverter x:Key="IsEqualConverter" />
+        
+        <Color x:Key="PrimaryOrange">#FF8200</Color>
+        <Color x:Key="SecondaryOrange">#FFA500</Color>
+        <Color x:Key="LightOrange">#FFDAB9</Color>
+        <Color x:Key="TextDark">#333333</Color>
+        <Color x:Key="TextGray">#666666</Color>
+
+        <Style x:Key="StatCardFrame" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="BorderColor" Value="#FFE4CC" />
+        </Style>
+
+        <Style x:Key="ChartContainerFrame" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="24" />
+            <Setter Property="Padding" Value="25" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="BorderColor" Value="#FFE4CC" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="DeviceStates">
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainContainer" Property="Padding" Value="40" />
+                        <Setter TargetName="StatsGrid" Property="ColumnDefinitions" Value="*, *, *" />
+                        <Setter TargetName="StatsGrid" Property="RowDefinitions" Value="Auto" />
+                        <Setter TargetName="ContentGrid" Property="ColumnDefinitions" Value="2*, 1*" />
+                        <Setter TargetName="ContentGrid" Property="RowDefinitions" Value="Auto" />
+                        
+                        <Setter TargetName="StatsCard1" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="StatsCard1" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="StatsCard2" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="StatsCard2" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="StatsCard3" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="StatsCard3" Property="Grid.Column" Value="2" />
+                        
+                        <Setter TargetName="MainDataColumn" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="MainDataColumn" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="SideColumn" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="SideColumn" Property="Grid.Column" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                
+                <VisualState x:Name="Mobile">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainContainer" Property="Padding" Value="20" />
+                        <Setter TargetName="StatsGrid" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="StatsGrid" Property="RowDefinitions" Value="Auto, Auto, Auto" />
+                        <Setter TargetName="ContentGrid" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="ContentGrid" Property="RowDefinitions" Value="Auto, Auto" />
+
+                        <Setter TargetName="StatsCard1" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="StatsCard1" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="StatsCard2" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="StatsCard2" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="StatsCard3" Property="Grid.Row" Value="2" />
+                        <Setter TargetName="StatsCard3" Property="Grid.Column" Value="0" />
+                        
+                        <Setter TargetName="MainDataColumn" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="MainDataColumn" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="SideColumn" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="SideColumn" Property="Grid.Column" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ScrollView x:Name="MainScrollView">
+            <VerticalStackLayout x:Name="MainContainer" Spacing="30">
+                
+                <!-- HEADER SECTION -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Admin Insights" FontSize="28" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" />
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="System Status:" TextColor="{StaticResource TextGray}" FontSize="14" FontFamily="PoppinsRegular" />
+                            <Label Text="Optimized" TextColor="#2E7D32" FontFamily="PoppinsSemibold" FontSize="14" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                    
+                    <Frame Grid.Column="1" HeightRequest="60" WidthRequest="60" CornerRadius="30" Padding="0" HasShadow="True" BorderColor="{StaticResource PrimaryOrange}">
+                         <Image Source="animal_care.png" Margin="12" Aspect="AspectFit" />
+                    </Frame>
+                </Grid>
+
+                <!-- SUMMARY STATS SECTION -->
+                <Grid x:Name="StatsGrid" ColumnSpacing="20" RowSpacing="20">
+                    <Frame x:Name="StatsCard1" Style="{StaticResource StatCardFrame}">
+                        <Grid ColumnDefinitions="Auto, *">
+                             <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" BackgroundColor="#FFF5E6" Padding="12" BorderColor="Transparent" HasShadow="False">
+                                <Image Source="users_icon.png" Aspect="AspectFit" />
+                             </Frame>
+                             <VerticalStackLayout Grid.Column="1" Spacing="0" Margin="15,0,0,0" VerticalOptions="Center">
+                                <Label Text="Total Users" FontSize="13" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                                <Label Text="{Binding TotalUsers}" FontSize="24" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                             </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <Frame x:Name="StatsCard2" Style="{StaticResource StatCardFrame}">
+                        <Grid ColumnDefinitions="Auto, *">
+                             <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" BackgroundColor="#FFF5E6" Padding="12" BorderColor="Transparent" HasShadow="False">
+                                <Image Source="paw.png" Aspect="AspectFit" />
+                             </Frame>
+                             <VerticalStackLayout Grid.Column="1" Spacing="0" Margin="15,0,0,0" VerticalOptions="Center">
+                                <Label Text="Total Pets" FontSize="13" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                                <Label Text="{Binding TotalPets}" FontSize="24" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                             </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <Frame x:Name="StatsCard3" Style="{StaticResource StatCardFrame}">
+                        <Grid ColumnDefinitions="Auto, *">
+                             <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" BackgroundColor="#FFF5E6" Padding="12" BorderColor="Transparent" HasShadow="False">
+                                <Image Source="calendar_icon.png" Aspect="AspectFit" />
+                             </Frame>
+                             <VerticalStackLayout Grid.Column="1" Spacing="0" Margin="15,0,0,0" VerticalOptions="Center">
+                                <Label Text="Appointments" FontSize="13" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                                <Label Text="{Binding TotalAppointments}" FontSize="24" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                             </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </Grid>
+
+                <!-- ANALYTICS SECTION -->
+                <Grid x:Name="ContentGrid" ColumnSpacing="25" RowSpacing="25">
+                    
+                    <!-- Main Chart Section -->
+                    <VerticalStackLayout x:Name="MainDataColumn" Spacing="25">
+                        <Frame Style="{StaticResource ChartContainerFrame}">
+                            <VerticalStackLayout Spacing="35">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <Label Text="Monthly Activity" FontFamily="PoppinsBold" FontSize="20" TextColor="{StaticResource TextDark}" />
+                                    <Label Grid.Column="1" Text="Growth Tracker" TextColor="{StaticResource PrimaryOrange}" FontSize="11" VerticalOptions="Center" FontFamily="PoppinsSemibold" />
+                                </Grid>
+                                
+                                <Grid HeightRequest="300" HorizontalOptions="Fill">
+                                    <FlexLayout BindableLayout.ItemsSource="{Binding MonthlyAppointments}" 
+                                                JustifyContent="SpaceEvenly" 
+                                                AlignItems="End"
+                                                Padding="10,0">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:ChartItem">
+                                                <VerticalStackLayout Spacing="12" VerticalOptions="End" HorizontalOptions="Center">
+                                                    <Label Text="{Binding Value}" FontSize="10" TextColor="{StaticResource TextGray}" HorizontalOptions="Center" Opacity="0.6" FontFamily="PoppinsRegular" />
+                                                    <Frame BackgroundColor="{StaticResource PrimaryOrange}" 
+                                                           HeightRequest="{Binding Percentage, Converter={StaticResource DoubleToHeightConverter}, ConverterParameter=220}" 
+                                                           WidthRequest="38"
+                                                           Padding="0"
+                                                           CornerRadius="8"
+                                                           HasShadow="True"
+                                                           BorderColor="Transparent">
+                                                        <Frame.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                                <GradientStop Color="#FFB347" Offset="0" />
+                                                                <GradientStop Color="{StaticResource PrimaryOrange}" Offset="1" />
+                                                            </LinearGradientBrush>
+                                                        </Frame.Background>
+                                                    </Frame>
+                                                    <Label Text="{Binding Label}" FontSize="11" TextColor="{StaticResource TextDark}" HorizontalOptions="Center" FontFamily="PoppinsSemibold" />
+                                                </VerticalStackLayout>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </FlexLayout>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Sidebar Section -->
+                    <VerticalStackLayout x:Name="SideColumn" Spacing="25">
+                        <Frame Style="{StaticResource ChartContainerFrame}">
+                            <VerticalStackLayout Spacing="20">
+                                <Label Text="Recent Activity" FontFamily="PoppinsBold" FontSize="18" TextColor="{StaticResource TextDark}" />
+                                <BoxView HeightRequest="1" BackgroundColor="#FFE4CC" Margin="0,-5,0,5" />
+                                
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding RecentActivities}" Spacing="18">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:ActivityItem">
+                                            <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15">
+                                                <Frame HeightRequest="44" WidthRequest="44" 
+                                                       CornerRadius="22" 
+                                                       BackgroundColor="#FFF5E6" 
+                                                       Padding="11"
+                                                       HasShadow="False"
+                                                       BorderColor="Transparent">
+                                                    <Image Source="{Binding Icon}" Aspect="AspectFit" />
+                                                </Frame>
+                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                                    <Label Text="{Binding Title}" FontSize="13" 
+                                                           FontFamily="PoppinsSemibold" TextColor="{StaticResource TextDark}" />
+                                                    <Label Text="{Binding Time}" FontSize="12" 
+                                                           TextColor="{StaticResource PrimaryOrange}" Opacity="0.9" FontFamily="PoppinsRegular" />
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

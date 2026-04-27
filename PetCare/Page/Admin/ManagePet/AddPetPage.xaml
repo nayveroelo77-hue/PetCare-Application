@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PetCare.Page.Admin.ManagePet.AddPetPage"
+             x:DataType="vm:PetDetailViewModel"
+             Title="Add Pet"
+             BackgroundColor="#FFF9F2">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#333333</Color>
+            <Color x:Key="TextGray">#666666</Color>
+
+            <Style x:Key="FormFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="Padding" Value="35" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BorderColor" Value="#FFE4CC" />
+            </Style>
+
+            <Style x:Key="InputFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="15,0" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="BorderColor" Value="#FFE4CC" />
+                <Setter Property="BackgroundColor" Value="#FAFAFA" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid x:Name="RootPageGrid">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="DesktopState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainGrid" Property="ColumnDefinitions" Value="*, *" />
+                        <Setter TargetName="MainGrid" Property="RowDefinitions" Value="*" />
+                        <Setter TargetName="BrandingPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="BrandingPanel" Property="IsVisible" Value="True" />
+                        <Setter TargetName="FormPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="MainContainer" Property="MaximumWidthRequest" Value="1200" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MobileState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainGrid" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="MainGrid" Property="RowDefinitions" Value="Auto, *" />
+                        <Setter TargetName="BrandingPanel" Property="IsVisible" Value="False" />
+                        <Setter TargetName="FormPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="FormPanel" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="MainContainer" Property="MaximumWidthRequest" Value="600" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ScrollView x:Name="MainContainer" VerticalOptions="Center" HorizontalOptions="Center">
+            <Grid x:Name="MainGrid" Padding="40" ColumnSpacing="80" RowSpacing="30">
+                
+                <!-- Left Panel: Context -->
+                <VerticalStackLayout x:Name="BrandingPanel" Spacing="35" VerticalOptions="Center">
+                    <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                        <Image Source="paw.png" HeightRequest="60" WidthRequest="60" />
+                        <Label Text="PetCare Admin" FontSize="34" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Register New Patient" FontSize="40" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" LineHeight="1.2" />
+                        <Label Text="Maintain high-quality records by providing accurate pet information. Every entry helps improve our patient care standards." 
+                               FontSize="18" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" LineHeight="1.5" />
+                    </VerticalStackLayout>
+
+                    <Frame Padding="0" CornerRadius="30" HasShadow="True" BorderColor="Transparent" HeightRequest="350" IsClippedToBounds="True">
+                        <Grid>
+                            <Image Source="petcare.jpg" Aspect="AspectFill" />
+                            <BoxView Color="{StaticResource PrimaryOrange}" Opacity="0.1" />
+                            <Image Source="animal_care.png" HeightRequest="120" HorizontalOptions="Center" VerticalOptions="Center" Opacity="0.8" />
+                        </Grid>
+                    </Frame>
+                    
+                    <Button Text="← Back to Database" 
+                            Command="{Binding CancelCommand}" 
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextGray}"
+                            FontFamily="PoppinsSemibold"
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+
+                <!-- Right Panel: Form -->
+                <VerticalStackLayout x:Name="FormPanel" Spacing="25" VerticalOptions="Center" WidthRequest="500">
+                    
+                    <VerticalStackLayout IsVisible="{Binding Source={x:Reference BrandingPanel}, Path=IsVisible, Converter={toolkit:InvertedBoolConverter}}" 
+                                          HorizontalOptions="Center" Spacing="15" Margin="0,0,0,10">
+                        <Label Text="New Pet Record" FontSize="32" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <Frame Style="{StaticResource FormFrame}">
+                        <VerticalStackLayout Spacing="22">
+                            
+                            <!-- Pet Information -->
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Pet Full Name" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                                <Frame Style="{StaticResource InputFrame}">
+                                    <Entry Placeholder="e.g. Buddy" Text="{Binding Pet.Name}" BackgroundColor="Transparent" />
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                                <VerticalStackLayout Spacing="6" Grid.Column="0">
+                                    <Label Text="Species" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                                    <Frame Style="{StaticResource InputFrame}">
+                                        <Picker ItemsSource="{Binding SpeciesList}" 
+                                                SelectedItem="{Binding SelectedSpecies}"
+                                                TextColor="{StaticResource TextDark}"
+                                                Title="Select..."
+                                                BackgroundColor="Transparent" />
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Spacing="6" Grid.Column="1">
+                                    <Label Text="Breed" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                                    <Frame Style="{StaticResource InputFrame}">
+                                        <Entry Placeholder="e.g. Golden Retriever" Text="{Binding Pet.Breed}" BackgroundColor="Transparent" />
+                                    </Frame>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                                <VerticalStackLayout Spacing="6" Grid.Column="0">
+                                    <Label Text="Age (Years)" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                                    <Frame Style="{StaticResource InputFrame}">
+                                        <Entry Placeholder="0" Text="{Binding Pet.Age}" Keyboard="Numeric" BackgroundColor="Transparent" />
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Spacing="6" Grid.Column="1">
+                                    <Label Text="Weight (kg)" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                                    <Frame Style="{StaticResource InputFrame}">
+                                        <Entry Placeholder="0.0" Text="{Binding Pet.Weight}" Keyboard="Numeric" BackgroundColor="Transparent" />
+                                    </Frame>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Assign Owner" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                                <Frame Style="{StaticResource InputFrame}">
+                                    <Picker ItemsSource="{Binding Clients}" 
+                                            ItemDisplayBinding="{Binding FullName}"
+                                            SelectedItem="{Binding SelectedClient}"
+                                            TextColor="{StaticResource TextDark}"
+                                            Title="Search owners..."
+                                            BackgroundColor="Transparent" />
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <BoxView HeightRequest="1" BackgroundColor="#FFE4CC" Margin="0,10" />
+
+                            <Button Text="Save Information" 
+                                    Command="{Binding SaveCommand}" 
+                                    BackgroundColor="{StaticResource PrimaryOrange}"
+                                    TextColor="White"
+                                    FontFamily="PoppinsBold"
+                                    CornerRadius="25"
+                                    HeightRequest="55" />
+                                
+                            <Button Text="Discard &amp; Go Back" 
+                                    IsVisible="{Binding Source={x:Reference BrandingPanel}, Path=IsVisible, Converter={toolkit:InvertedBoolConverter}}"
+                                    Command="{Binding CancelCommand}" 
+                                    BackgroundColor="Transparent"
+                                    TextColor="#D32F2F"
+                                    FontFamily="PoppinsSemibold" />
+
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

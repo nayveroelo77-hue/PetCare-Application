@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PetCare.Page.Client.ClientProfilePage"
+             x:DataType="vm:ClientProfileViewModel"
+             Title="My Profile"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+            <Color x:Key="CreamWhite">#FFF9F2</Color>
+
+            <Style x:Key="ProfileFrame" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="Padding" Value="25" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BorderColor" Value="{StaticResource BorderOrange}" />
+            </Style>
+
+            <Style x:Key="InputFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="15,0" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="BorderColor" Value="#FFE4CC" />
+                <Setter Property="BackgroundColor" Value="#FAFAFA" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25,60" Spacing="30">
+            
+            <!-- User Header -->
+            <VerticalStackLayout Spacing="15" HorizontalOptions="Center">
+                <Frame HeightRequest="120" WidthRequest="120" CornerRadius="60" BackgroundColor="{StaticResource CreamWhite}" Padding="0" HasShadow="True" BorderColor="{StaticResource PrimaryOrange}" HorizontalOptions="Center">
+                    <Image Source="users_icon.png" Margin="35" Aspect="AspectFit" />
+                </Frame>
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Label Text="{Binding FullName}" FontSize="28" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" HorizontalOptions="Center" />
+                    <Label Text="Premium Client Account" FontSize="13" TextColor="{StaticResource PrimaryOrange}" FontFamily="PoppinsSemibold" HorizontalOptions="Center" Opacity="0.8" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Read-Only Account Details -->
+            <Frame Style="{StaticResource ProfileFrame}" IsVisible="{Binding IsEditing, Converter={toolkit:InvertedBoolConverter}}">
+                <VerticalStackLayout Spacing="20">
+                    <Label Text="ACCOUNT SETTINGS" FontSize="11" FontFamily="PoppinsBold" TextColor="{StaticResource TextGray}" Opacity="0.6" CharacterSpacing="1" />
+                    
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15">
+                        <Label Text="📧" FontSize="18" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="Email Address" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                            <Label Text="{Binding Email}" FontSize="15" FontFamily="PoppinsSemibold" TextColor="{StaticResource TextDark}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" BackgroundColor="{StaticResource BorderOrange}" Opacity="0.3" />
+
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15">
+                        <Label Text="📱" FontSize="18" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="Mobile Number" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                            <Label Text="{Binding MobileNumber}" FontSize="15" FontFamily="PoppinsSemibold" TextColor="{StaticResource TextDark}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Edit Form -->
+            <Frame Style="{StaticResource ProfileFrame}" IsVisible="{Binding IsEditing}">
+                <VerticalStackLayout Spacing="20">
+                    <Label Text="EDIT PROFILE" FontSize="11" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" CharacterSpacing="1" />
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Full Name" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                        <Frame Style="{StaticResource InputFrame}">
+                            <Entry Text="{Binding FullName}" TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" Placeholder="Enter your name" BackgroundColor="Transparent" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Mobile Number" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                        <Frame Style="{StaticResource InputFrame}">
+                            <Entry Text="{Binding MobileNumber}" Keyboard="Telephone" TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" Placeholder="Enter mobile number" BackgroundColor="Transparent" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <Button Text="Save Changes" Command="{Binding SaveProfileCommand}" BackgroundColor="{StaticResource PrimaryOrange}" TextColor="White" FontFamily="PoppinsBold" CornerRadius="18" HeightRequest="55" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Settings / Actions -->
+            <VerticalStackLayout Spacing="12">
+                <Button Text="{Binding EditButtonText}" Command="{Binding ToggleEditCommand}" BackgroundColor="White" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" CornerRadius="18" BorderColor="{StaticResource BorderOrange}" BorderWidth="1" HeightRequest="60" />
+                <Button Text="Sign Out" BackgroundColor="#FFE5E5" TextColor="#D32F2F" FontFamily="PoppinsBold" CornerRadius="18" HeightRequest="60" Command="{Binding LogoutCommand}" />
+            </VerticalStackLayout>
+
+            <Label Text="Version 1.0.4 - PetCare Simple" FontSize="11" TextColor="{StaticResource TextGray}" HorizontalOptions="Center" FontFamily="PoppinsRegular" Opacity="0.5" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

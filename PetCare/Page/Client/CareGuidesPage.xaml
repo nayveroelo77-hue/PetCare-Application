@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             x:Class="PetCare.Page.Client.CareGuidesPage"
+             x:DataType="vm:CareGuidesViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+            <Color x:Key="CreamWhite">#FFF9F2</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header -->
+        <VerticalStackLayout Padding="25,40,25,20" Spacing="5">
+            <Label Text="Pet Care Guides" FontSize="32" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+            <Label Text="Expert tips for your furry friends" TextColor="{StaticResource TextGray}" FontSize="15" FontFamily="PoppinsRegular" />
+        </VerticalStackLayout>
+
+        <!-- Guides List -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Guides}" SelectionMode="None" Margin="25,0,25,0">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:CareGuide">
+                    <Frame BackgroundColor="White" CornerRadius="24" Padding="20" Margin="0,0,0,20" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CareGuidesViewModel}}, Path=ViewGuideCommand}" CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="20">
+                            <Frame HeightRequest="60" WidthRequest="60" CornerRadius="30" Padding="0" HasShadow="False" BorderColor="{StaticResource BorderOrange}" BackgroundColor="{StaticResource CreamWhite}" VerticalOptions="Start">
+                                <Image Source="{Binding Icon}" Margin="15" Aspect="AspectFit" />
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <HorizontalStackLayout Spacing="8">
+                                    <Frame BackgroundColor="{Binding CategoryBgColor}" Padding="8,3" CornerRadius="8" HasShadow="False" BorderColor="Transparent">
+                                        <Label Text="{Binding Category}" FontSize="10" FontFamily="PoppinsBold" TextColor="{Binding CategoryColor}" />
+                                    </Frame>
+                                </HorizontalStackLayout>
+                                <Label Text="{Binding Title}" FontSize="18" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                                <Label Text="{Binding ShortDescription}" FontSize="13" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" MaxLines="2" LineBreakMode="TailTruncation" />
+                                
+                                <Label Text="Read Guide →" FontSize="12" FontFamily="PoppinsSemibold" TextColor="{StaticResource PrimaryOrange}" Margin="0,10,0,0" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

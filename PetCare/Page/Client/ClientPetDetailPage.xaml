@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PetCare.Page.Client.ClientPetDetailPage"
+             x:DataType="vm:PetDetailViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+
+            <Style x:Key="InputFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="15,0" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="BorderColor" Value="#FFE4CC" />
+                <Setter Property="BackgroundColor" Value="#FAFAFA" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25,40" Spacing="25">
+            
+            <Label Text="{Binding Title}" FontSize="32" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+            
+            <Frame BackgroundColor="White" CornerRadius="24" Padding="25" HasShadow="True" BorderColor="#FFE4CC">
+                <VerticalStackLayout Spacing="20">
+                    
+                    <!-- Pet Name -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Pet Name" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                        <Frame Style="{StaticResource InputFrame}">
+                            <Entry Placeholder="e.g. Buddy" Text="{Binding Pet.Name}" IsReadOnly="{Binding IsReadOnly}" TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" BackgroundColor="Transparent" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Species & Breed -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Species" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                            <Frame Style="{StaticResource InputFrame}">
+                                <Picker ItemsSource="{Binding SpeciesList}" 
+                                        SelectedItem="{Binding SelectedSpecies}"
+                                        IsEnabled="{Binding IsReadOnly, Converter={toolkit:InvertedBoolConverter}}"
+                                        Title="Select..."
+                                        TextColor="{StaticResource TextDark}"
+                                        BackgroundColor="Transparent" />
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6" Grid.Column="1">
+                            <Label Text="Breed" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                            <Frame Style="{StaticResource InputFrame}">
+                                <Entry Placeholder="e.g. Beagle" Text="{Binding Pet.Breed}" IsReadOnly="{Binding IsReadOnly}" TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" BackgroundColor="Transparent" />
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Age & Weight -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Age (Years)" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                            <Frame Style="{StaticResource InputFrame}">
+                                <Entry Text="{Binding Pet.Age}" IsReadOnly="{Binding IsReadOnly}" Keyboard="Numeric" TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" Placeholder="0" BackgroundColor="Transparent" />
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6" Grid.Column="1">
+                            <Label Text="Weight (kg)" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                            <Frame Style="{StaticResource InputFrame}">
+                                <Entry Text="{Binding Pet.Weight}" IsReadOnly="{Binding IsReadOnly}" Keyboard="Numeric" TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" Placeholder="0.0" BackgroundColor="Transparent" />
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" BackgroundColor="#FFE4CC" Margin="0,10" />
+
+                    <Button Text="{Binding SaveButtonText}" 
+                            Command="{Binding SaveCommand}" 
+                            BackgroundColor="{StaticResource PrimaryOrange}"
+                            TextColor="White"
+                            FontFamily="PoppinsBold"
+                            CornerRadius="20"
+                            HeightRequest="55" />
+
+                    <Button Text="Cancel" 
+                            Command="{Binding CancelCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextGray}"
+                            FontFamily="PoppinsSemibold" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

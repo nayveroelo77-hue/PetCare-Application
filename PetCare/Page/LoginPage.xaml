@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PetCare.Page.LoginPage"
+             Title="PetCare Login"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Core Colors -->
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+
+            <!-- Typography Style -->
+            <Style x:Key="FieldLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextGray}" />
+                <Setter Property="FontFamily" Value="PoppinsSemibold" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="Margin" Value="5,0,0,3" />
+            </Style>
+
+            <Style x:Key="AuthEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{StaticResource TextDark}" />
+                <Setter Property="PlaceholderColor" Value="#BDBDBD" />
+                <Setter Property="FontFamily" Value="PoppinsRegular" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+
+            <Style x:Key="EntryFrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#FFFFFF" />
+                <Setter Property="CornerRadius" Value="14" />
+                <Setter Property="Padding" Value="15,0" />
+                <Setter Property="HeightRequest" Value="56" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BorderColor" Value="{StaticResource BorderOrange}" />
+            </Style>
+
+            <Style x:Key="PrimaryAuthButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryOrange}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontFamily" Value="PoppinsBold" />
+                <Setter Property="CornerRadius" Value="28" />
+                <Setter Property="HeightRequest" Value="56" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="CharacterSpacing" Value="0.5" />
+            </Style>
+
+            <Style x:Key="SecondaryAuthButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource PrimaryOrange}" />
+                <Setter Property="BorderColor" Value="{StaticResource PrimaryOrange}" />
+                <Setter Property="BorderWidth" Value="1.5" />
+                <Setter Property="FontFamily" Value="PoppinsBold" />
+                <Setter Property="CornerRadius" Value="28" />
+                <Setter Property="HeightRequest" Value="56" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFDFB" Offset="0" />
+            <GradientStop Color="#FFF0E0" Offset="1" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid x:Name="RootPageGrid">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="DesktopState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainGrid" Property="ColumnDefinitions" Value="*, *" />
+                        <Setter TargetName="MainGrid" Property="RowDefinitions" Value="*" />
+                        <Setter TargetName="MainGrid" Property="Padding" Value="60" />
+                        <Setter TargetName="MainGrid" Property="ColumnSpacing" Value="100" />
+                        <Setter TargetName="BrandingPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="BrandingPanel" Property="IsVisible" Value="True" />
+                        <Setter TargetName="LoginFormPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="LoginFormPanel" Property="Margin" Value="0" />
+                        <Setter TargetName="LoginCard" Property="Padding" Value="45" />
+                        <Setter TargetName="MainContainer" Property="MaximumWidthRequest" Value="1200" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MobileState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainGrid" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="MainGrid" Property="RowDefinitions" Value="Auto, *" />
+                        <Setter TargetName="MainGrid" Property="Padding" Value="24, 40" />
+                        <Setter TargetName="MainGrid" Property="RowSpacing" Value="0" />
+                        <Setter TargetName="BrandingPanel" Property="IsVisible" Value="False" />
+                        <Setter TargetName="LoginFormPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="LoginFormPanel" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="LoginFormPanel" Property="Margin" Value="0, 10, 0, 40" />
+                        <Setter TargetName="LoginCard" Property="Padding" Value="25" />
+                        <Setter TargetName="MainContainer" Property="MaximumWidthRequest" Value="500" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ScrollView x:Name="MainContainer" VerticalOptions="Fill" HorizontalOptions="Fill">
+            <Grid x:Name="MainGrid" Padding="24" ColumnSpacing="20" RowSpacing="30">
+                
+                <!-- BRANDING PANEL (Desktop) -->
+                <VerticalStackLayout x:Name="BrandingPanel" Spacing="40" VerticalOptions="Center">
+                    <HorizontalStackLayout Spacing="18" VerticalOptions="Center">
+                        <Image Source="paw.png" HeightRequest="64" WidthRequest="64" />
+                        <Label Text="PetCare" FontSize="36" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout Spacing="20">
+                        <Label Text="Premium Care for Your Best Friends" FontSize="44" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" LineHeight="1.1" />
+                        <Label Text="Join a community dedicated to Pet health and happiness. Professional care at your fingertips." 
+                               FontSize="18" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" LineHeight="1.5" />
+                    </VerticalStackLayout>
+
+                    <Frame Padding="0" CornerRadius="32" HasShadow="True" BorderColor="Transparent" HeightRequest="420" IsClippedToBounds="True">
+                        <Image Source="petcare.jpg" Aspect="AspectFill" />
+                    </Frame>
+                </VerticalStackLayout>
+
+                <!-- LOGIN FORM PANEL -->
+                <VerticalStackLayout x:Name="LoginFormPanel" Spacing="25" VerticalOptions="Center" HorizontalOptions="Fill" MaximumWidthRequest="440">
+                    
+                    <VerticalStackLayout IsVisible="{Binding Source={x:Reference BrandingPanel}, Path=IsVisible, Converter={toolkit:InvertedBoolConverter}}" 
+                                          HorizontalOptions="Center" Spacing="10" Margin="0,0,0,10">
+                        <Image Source="paw.png" HeightRequest="60" WidthRequest="60" />
+                        <Label Text="PetCare" FontSize="30" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <Frame x:Name="LoginCard" BackgroundColor="White" CornerRadius="28" Padding="25" HasShadow="True" BorderColor="#FFE4CC">
+                        <VerticalStackLayout Spacing="32">
+                            
+                            <!-- Header -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Welcome Back" FontSize="28" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" HorizontalTextAlignment="Center" />
+                                <Label Text="Login to continue your journey" FontSize="14" TextColor="{StaticResource TextGray}" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+
+                            <!-- Inputs -->
+                            <VerticalStackLayout Spacing="18">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="Email Address" Style="{StaticResource FieldLabelStyle}" />
+                                    <Frame Style="{StaticResource EntryFrameStyle}">
+                                        <Entry x:Name="EmailEntry" Placeholder="name@example.com" Text="{Binding Email}" 
+                                               Style="{StaticResource AuthEntryStyle}" Keyboard="Email" />
+                                    </Frame>
+                                </VerticalStackLayout>
+                                
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="Password" Style="{StaticResource FieldLabelStyle}" />
+                                    <Frame Style="{StaticResource EntryFrameStyle}">
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <Entry Grid.Column="0" x:Name="PasswordEntry" Placeholder="Enter your password" 
+                                                   Text="{Binding Password}" IsPassword="{Binding IsPasswordHidden}" 
+                                                   Style="{StaticResource AuthEntryStyle}" VerticalOptions="Center" />
+                                            
+                                            <ImageButton Grid.Column="1" Command="{Binding TogglePasswordVisibilityCommand}"
+                                                         HorizontalOptions="End" VerticalOptions="Center"
+                                                         Padding="10" HeightRequest="44" WidthRequest="44" BackgroundColor="Transparent">
+                                                <ImageButton.Source>
+                                                    <FontImageSource FontFamily="OpenSansRegular" Glyph="👁" Color="{StaticResource TextGray}" Size="20" />
+                                                </ImageButton.Source>
+                                                <ImageButton.Triggers>
+                                                    <DataTrigger TargetType="ImageButton" Binding="{Binding IsPasswordHidden}" Value="False">
+                                                        <Setter Property="Source">
+                                                            <Setter.Value>
+                                                                <FontImageSource FontFamily="OpenSansRegular" Glyph="◌" Color="{StaticResource PrimaryOrange}" Size="20" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </ImageButton.Triggers>
+                                            </ImageButton>
+                                        </Grid>
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                                <Label Text="Forgot Password?" TextColor="{StaticResource PrimaryOrange}" FontSize="13" 
+                                       FontFamily="PoppinsSemibold" HorizontalTextAlignment="End" Margin="0,0,5,0" />
+                            </VerticalStackLayout>
+
+                            <!-- Actions -->
+                            <VerticalStackLayout Spacing="15">
+                                <Button Text="Login Account" Clicked="OnLoginClicked" Style="{StaticResource PrimaryAuthButton}" />
+                                <Button Text="Register New Account" Command="{Binding RegisterCommand}" Style="{StaticResource SecondaryAuthButton}" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Label Text="Premium Veterinary Administrative Portal" 
+                           TextColor="{StaticResource TextGray}" FontSize="12" HorizontalTextAlignment="Center" Opacity="0.5" Margin="0,15,0,0" />
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

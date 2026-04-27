@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PetCare.Page.Admin.ManagePet.EditPetPage"
+             x:DataType="vm:PetDetailViewModel"
+             Title="Edit Pet Record"
+             x:Name="EditPetRecordPage">
+
+
+    <Grid x:Name="RootPageGrid">
+        <Image Source="petcare.jpg" Aspect="AspectFill" Opacity="0.25" VerticalOptions="Fill" HorizontalOptions="Fill" />
+        <BoxView Color="{StaticResource MidnightBlue}" Opacity="0.85" VerticalOptions="Fill" HorizontalOptions="Fill" />
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="DesktopState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="900" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainGrid" Property="ColumnDefinitions" Value="*, *" />
+                        <Setter TargetName="BrandingPanel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="FormPanel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="MainContainer" Property="MaximumWidthRequest" Value="1200" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MobileState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="MainGrid" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="MainGrid" Property="RowDefinitions" Value="Auto, *" />
+                        <Setter TargetName="BrandingPanel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="FormPanel" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="MainContainer" Property="MaximumWidthRequest" Value="600" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ScrollView x:Name="MainContainer" VerticalOptions="Center" HorizontalOptions="Center">
+            <Grid x:Name="MainGrid" Padding="40" ColumnSpacing="60" RowSpacing="20">
+                
+                <!-- Left Panel: Profile Context -->
+                <VerticalStackLayout x:Name="BrandingPanel" Spacing="30" VerticalOptions="Center">
+                    <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                        <Frame WidthRequest="60" HeightRequest="60" BackgroundColor="#1AFFFFFF" CornerRadius="30" Padding="0" HasShadow="False" BorderColor="Transparent">
+                            <Image Source="animal_care.png" HeightRequest="30" WidthRequest="30" />
+                        </Frame>
+                        <Label Text="Edit Patient" FontSize="28" FontFamily="PoppinsBold" TextColor="White" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding Pet.Name}" FontSize="36" FontFamily="PoppinsBold" TextColor="{StaticResource CyanBright}" />
+                        <Label Text="Current Breed: " FontSize="14" Opacity="0.7" TextColor="White">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Currently listed as: " />
+                                    <Span Text="{Binding Pet.Breed}" FontFamily="PoppinsBold" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+
+                    <Frame Style="{StaticResource GlassCard}" Padding="20">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Modification Log" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Opacity="0.9" />
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="Registered on:" FontSize="13" TextColor="{StaticResource TextGray}" />
+                                <Label Text="{Binding Pet.CreatedAt, StringFormat='{0:MMM dd, yyyy}'}" FontSize="13" TextColor="White" />
+                            </HorizontalStackLayout>
+                            <Label Text="All updates will be timestamped for audit purposes." FontSize="12" TextColor="{StaticResource CyanBright}" Opacity="0.7" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Button Text="Cancel Changes" 
+                            Command="{Binding CancelCommand}" 
+                            Style="{StaticResource SecondaryButton}" 
+                            HorizontalOptions="Start" 
+                            WidthRequest="220" />
+                </VerticalStackLayout>
+
+                <!-- Right Panel: Form Action -->
+                <VerticalStackLayout x:Name="FormPanel" Spacing="25" VerticalOptions="Center" WidthRequest="450">
+                    <Frame Style="{StaticResource GlassCard}" Padding="30">
+                        <VerticalStackLayout Spacing="20">
+                            
+                            <!-- Form Fields -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Update Pet Name" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Margin="5,0" />
+                                <Entry Placeholder="Enter pet name" Text="{Binding Pet.Name}" Style="{StaticResource ModernInput}" />
+                            </VerticalStackLayout>
+
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                                <VerticalStackLayout Spacing="8" Grid.Column="0">
+                                    <Label Text="Species" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Margin="5,0" />
+                                    <Frame Style="{StaticResource ModernInputFrame}">
+                                        <Picker ItemsSource="{Binding SpeciesList}" 
+                                                SelectedItem="{Binding SelectedSpecies}"
+                                                TextColor="White"
+                                                Title="Select..."
+                                                TitleColor="{StaticResource TextGray}"
+                                                BackgroundColor="Transparent" />
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Spacing="8" Grid.Column="1">
+                                    <Label Text="Breed" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Margin="5,0" />
+                                    <Entry Placeholder="Breed" Text="{Binding Pet.Breed}" Style="{StaticResource ModernInput}" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                                <VerticalStackLayout Spacing="8" Grid.Column="0">
+                                    <Label Text="Age (Years)" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Margin="5,0" />
+                                    <Entry Placeholder="Age" Text="{Binding Pet.Age}" Keyboard="Numeric" Style="{StaticResource ModernInput}" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Spacing="8" Grid.Column="1">
+                                    <Label Text="Weight (kg)" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Margin="5,0" />
+                                    <Entry Placeholder="Weight" Text="{Binding Pet.Weight}" Keyboard="Numeric" Style="{StaticResource ModernInput}" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Assign Owner" FontSize="14" FontFamily="PoppinsBold" TextColor="White" Margin="5,0" />
+                                <Frame Style="{StaticResource ModernInputFrame}">
+                                    <Picker ItemsSource="{Binding Clients}" 
+                                            ItemDisplayBinding="{Binding FullName}"
+                                            SelectedItem="{Binding SelectedClient}"
+                                            TextColor="White"
+                                            Title="Select Owner..."
+                                            TitleColor="{StaticResource TextGray}"
+                                            BackgroundColor="Transparent" />
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <BoxView HeightRequest="1" BackgroundColor="White" Opacity="0.1" Margin="0,10" />
+
+                            <Button Text="Update Pet Record" 
+                                    Command="{Binding SaveCommand}" 
+                                    Style="{StaticResource PrimaryButton}" />
+                                    
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

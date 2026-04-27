@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             x:Class="PetCare.Page.Client.BookAppointmentPage"
+             x:DataType="vm:BookAppointmentViewModel"
+             Title="Book Appointment"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+
+            <Style x:Key="InputFrame" TargetType="Frame">
+                <Setter Property="Padding" Value="15,0" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="BorderColor" Value="#FFE4CC" />
+                <Setter Property="BackgroundColor" Value="#FAFAFA" />
+                <Setter Property="HasShadow" Value="False" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25,40" Spacing="25">
+
+            <Label Text="Book a Visit" FontSize="32" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+            <Label Text="Schedule a new appointment for your pet" TextColor="{StaticResource TextGray}" FontSize="15" FontFamily="PoppinsRegular" Margin="0,-15,0,0" />
+
+            <Frame BackgroundColor="White" CornerRadius="24" Padding="25" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                <VerticalStackLayout Spacing="20">
+
+                    <!-- Select Pet -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Select Pet" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                        <Frame Style="{StaticResource InputFrame}">
+                            <Picker ItemsSource="{Binding MyPets}"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    SelectedItem="{Binding SelectedPet}"
+                                    Title="Choose your pet..."
+                                    TextColor="{StaticResource TextDark}"
+                                    BackgroundColor="Transparent" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Service Type -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Service Type" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                        <Frame Style="{StaticResource InputFrame}">
+                            <Picker ItemsSource="{Binding ServiceTypes}"
+                                    SelectedItem="{Binding SelectedService}"
+                                    Title="Select service..."
+                                    TextColor="{StaticResource TextDark}"
+                                    BackgroundColor="Transparent" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Date & Time -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Date" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                            <Frame Style="{StaticResource InputFrame}">
+                                <DatePicker Date="{Binding AppointmentDate}" MinimumDate="{Binding MinDate}" TextColor="{StaticResource TextDark}" BackgroundColor="Transparent" />
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Time" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                            <Frame Style="{StaticResource InputFrame}">
+                                <TimePicker Time="{Binding AppointmentTime}" TextColor="{StaticResource TextDark}" BackgroundColor="Transparent" />
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Notes -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Notes (Optional)" FontSize="13" TextColor="{StaticResource TextDark}" FontFamily="PoppinsSemibold" Margin="5,0" />
+                        <Frame Padding="15,10" CornerRadius="12" BorderColor="#FFE4CC" BackgroundColor="#FAFAFA" HasShadow="False" HeightRequest="100">
+                            <Editor Text="{Binding Notes}" Placeholder="Any special instructions..." TextColor="{StaticResource TextDark}" PlaceholderColor="{StaticResource TextGray}" BackgroundColor="Transparent" AutoSize="TextChanges" />
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="1" BackgroundColor="#FFE4CC" Margin="0,5" />
+
+                    <Button Text="Confirm Booking" Command="{Binding BookCommand}" BackgroundColor="{StaticResource PrimaryOrange}" TextColor="White" FontFamily="PoppinsBold" CornerRadius="20" HeightRequest="55" />
+                    <Button Text="Cancel" Command="{Binding CancelCommand}" BackgroundColor="Transparent" TextColor="{StaticResource TextGray}" FontFamily="PoppinsSemibold" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

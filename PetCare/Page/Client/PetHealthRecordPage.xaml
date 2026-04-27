@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PetCare.ViewModel"
+             xmlns:model="clr-namespace:PetCare.Model"
+             x:Class="PetCare.Page.Client.PetHealthRecordPage"
+             x:DataType="vm:PetHealthViewModel"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#FFFDFB">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="TextDark">#2D2D2D</Color>
+            <Color x:Key="TextGray">#757575</Color>
+            <Color x:Key="BorderOrange">#FFE4CC</Color>
+            <Color x:Key="CreamWhite">#FFF9F2</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25,40" Spacing="25">
+
+            <!-- Back Button -->
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="← Back" Command="{Binding GoBackCommand}" BackgroundColor="Transparent" TextColor="{StaticResource TextGray}" FontFamily="PoppinsSemibold" Padding="0" />
+            </HorizontalStackLayout>
+
+            <!-- Pet Header -->
+            <Frame BackgroundColor="White" CornerRadius="24" Padding="20" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
+                    <Frame HeightRequest="80" WidthRequest="80" CornerRadius="40" Padding="0" HasShadow="False" BorderColor="{StaticResource PrimaryOrange}" BackgroundColor="{StaticResource CreamWhite}">
+                        <Image Source="animal_care.png" Margin="18" Aspect="AspectFit" />
+                    </Frame>
+                    <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                        <Label Text="{Binding Pet.Name}" FontSize="24" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                        <Label Text="{Binding Pet.Breed}" FontSize="13" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                        <HorizontalStackLayout Spacing="8" Margin="0,5,0,0">
+                            <Frame BackgroundColor="{StaticResource BorderOrange}" Padding="8,3" CornerRadius="10" HasShadow="False" BorderColor="Transparent">
+                                <Label Text="{Binding Pet.Species}" FontSize="10" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" />
+                            </Frame>
+                            <Frame BackgroundColor="#F5F5F5" Padding="8,3" CornerRadius="10" HasShadow="False" BorderColor="Transparent">
+                                <Label Text="{Binding Pet.Age, StringFormat='{0} YRS'}" FontSize="10" FontFamily="PoppinsBold" TextColor="#BDBDBD" />
+                            </Frame>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Stats Row -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                <Frame BackgroundColor="White" CornerRadius="18" Padding="12" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="⚖️" FontSize="20" HorizontalOptions="Center" />
+                        <Label Text="Weight" FontSize="10" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" HorizontalOptions="Center" />
+                        <Label Text="{Binding WeightDisplay}" FontSize="16" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="18" Padding="12" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="✅" FontSize="20" HorizontalOptions="Center" />
+                        <Label Text="Visits" FontSize="10" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" HorizontalOptions="Center" />
+                        <Label Text="{Binding CompletedVisits}" FontSize="16" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="2" BackgroundColor="White" CornerRadius="18" Padding="12" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="📅" FontSize="20" HorizontalOptions="Center" />
+                        <Label Text="Last Visit" FontSize="10" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" HorizontalOptions="Center" />
+                        <Label Text="{Binding LastVisitDate}" FontSize="11" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- Health Timeline -->
+            <Label Text="CLINICAL HISTORY" FontSize="10" FontFamily="PoppinsBold" TextColor="{StaticResource TextGray}" Opacity="0.6" CharacterSpacing="1" />
+
+            <RefreshView Command="{Binding LoadHealthHistoryCommand}" IsRefreshing="{Binding IsBusy}">
+                <CollectionView ItemsSource="{Binding HealthHistory}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="40" Spacing="15" HorizontalOptions="Center">
+                            <Label Text="📋" FontSize="50" HorizontalOptions="Center" Opacity="0.2" />
+                            <Label Text="No clinical history recorded yet." TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" FontSize="14" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:AppointmentDisplay">
+                            <Frame BackgroundColor="White" CornerRadius="18" Padding="18" Margin="0,0,0,10" HasShadow="True" BorderColor="{StaticResource BorderOrange}">
+                                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="15">
+                                    <!-- Timeline Dot -->
+                                    <Frame HeightRequest="40" WidthRequest="40" CornerRadius="20" BackgroundColor="{StaticResource CreamWhite}" Padding="0" HasShadow="False" BorderColor="{StaticResource BorderOrange}" VerticalOptions="Start">
+                                        <Label Text="{Binding StatusIcon}" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </Frame>
+
+                                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                        <Label Text="{Binding Appointment.ServiceType}" FontSize="16" FontFamily="PoppinsBold" TextColor="{StaticResource TextDark}" />
+                                        <Label Text="{Binding Appointment.DateTime, StringFormat='{0:MMMM dd, yyyy - hh:mm tt}'}" FontSize="11" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" />
+                                        <Frame BackgroundColor="{Binding StatusColor}" Padding="8,3" CornerRadius="8" HasShadow="False" BorderColor="Transparent" HorizontalOptions="Start" Margin="0,5,0,0" Opacity="0.15">
+                                            <Label Text="{Binding StatusLabel}" FontSize="10" FontFamily="PoppinsBold" TextColor="{Binding StatusColor}" />
+                                        </Frame>
+                                        <Label Text="{Binding Appointment.Notes}" FontSize="12" TextColor="{StaticResource TextGray}" FontFamily="PoppinsRegular" IsVisible="{Binding HasNotes}" Margin="0,5,0,0" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

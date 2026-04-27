@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PetCare/PetCare.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>

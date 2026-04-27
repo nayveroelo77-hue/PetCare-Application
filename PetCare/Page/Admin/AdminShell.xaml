@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PetCare.Page.Admin.AdminShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:admin="clr-namespace:PetCare.Page.Admin"
+    xmlns:adminpet="clr-namespace:PetCare.Page.Admin.ManagePet"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="PetCare - Admin"
+    FlyoutBehavior="Flyout"
+    Shell.BackgroundColor="{StaticResource PrimaryOrange}"
+    Shell.ForegroundColor="White"
+    Shell.TitleColor="White"
+    FlyoutBackgroundColor="#FFF9F2">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryOrange">#FF8200</Color>
+            <Color x:Key="SecondaryOrange">#FFA500</Color>
+            <Color x:Key="LightOrange">#FFDAB9</Color>
+            <Color x:Key="CreamWhite">#FFFAF0</Color>
+
+            <Style x:Key="NavFrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="CornerRadius" Value="15" />
+                <Setter Property="Padding" Value="15, 12" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BorderColor" Value="Transparent" />
+                <Setter Property="Margin" Value="5,2" />
+            </Style>
+
+            <Style x:Key="NavIconStyle" TargetType="Image">
+                <Setter Property="HeightRequest" Value="24" />
+                <Setter Property="WidthRequest" Value="24" />
+                <Setter Property="Margin" Value="0,0,15,0" />
+                <Setter Property="Opacity" Value="0.7" />
+            </Style>
+
+            <Style x:Key="NavTextStyle" TargetType="Label">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="#333333" />
+                <Setter Property="FontFamily" Value="PoppinsSemibold" />
+                <Setter Property="FontSize" Value="15" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <Shell.TitleView>
+        <Grid x:Name="MobileNav" HorizontalOptions="Fill" HeightRequest="60">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="DeviceStates">
+                    <VisualState x:Name="Desktop">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="900" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter TargetName="MobileNav" Property="IsVisible" Value="False" />
+                            <Setter TargetName="MobileNav" Property="HeightRequest" Value="0" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Mobile">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <Label Text="PetCare Admin" 
+                   TextColor="White" 
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Start" 
+                   Margin="10,0,0,0"
+                   FontFamily="PoppinsBold" 
+                   FontSize="18" />
+        </Grid>
+    </Shell.TitleView>
+
+    <Shell.FlyoutHeader>
+        <Grid Padding="25, 50, 25, 30" BackgroundColor="{StaticResource CreamWhite}">
+            <BoxView Color="{StaticResource PrimaryOrange}" Opacity="0.05" Margin="-25, -50, -25, -30" />
+            
+            <VerticalStackLayout Spacing="12">
+                <Frame HeightRequest="80" WidthRequest="80" 
+                       CornerRadius="40" 
+                       BackgroundColor="White" 
+                       HorizontalOptions="Start"
+                       Padding="0"
+                       HasShadow="True"
+                       BorderColor="{StaticResource PrimaryOrange}">
+                    <Image Source="animal_care.png" Margin="18" Aspect="AspectFit" />
+                </Frame>
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="PetCare Admin" FontSize="24" FontFamily="PoppinsBold" TextColor="{StaticResource PrimaryOrange}" />
+                    <Label Text="Administrator Portal" FontSize="13" TextColor="#666666" Opacity="0.8" FontFamily="PoppinsRegular" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutContent>
+        <Grid RowDefinitions="*, Auto">
+            <ScrollView Grid.Row="0">
+                <VerticalStackLayout Padding="10, 15" Spacing="8">
+                    
+                    <!-- Dashboard Nav -->
+                    <Frame Style="{StaticResource NavFrameStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding CurrentRoute}" Value="AdminDashboard">
+                                <Setter Property="BackgroundColor" Value="#FFE4CC" />
+                                <Setter Property="BorderColor" Value="{StaticResource PrimaryOrange}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <HorizontalStackLayout>
+                            <Image Source="dashboard_icon.png" Style="{StaticResource NavIconStyle}" />
+                            <Label Text="Dashboard" Style="{StaticResource NavTextStyle}" />
+                        </HorizontalStackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="///AdminDashboard" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <!-- Users Nav -->
+                    <Frame Style="{StaticResource NavFrameStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding CurrentRoute}" Value="ManageUsers">
+                                <Setter Property="BackgroundColor" Value="#FFE4CC" />
+                                <Setter Property="BorderColor" Value="{StaticResource PrimaryOrange}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <HorizontalStackLayout>
+                            <Image Source="users_icon.png" Style="{StaticResource NavIconStyle}" />
+                            <Label Text="Manage Users" Style="{StaticResource NavTextStyle}" />
+                        </HorizontalStackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="///ManageUsers" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <!-- Pets Nav -->
+                    <Frame Style="{StaticResource NavFrameStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding CurrentRoute}" Value="ManagePets">
+                                <Setter Property="BackgroundColor" Value="#FFE4CC" />
+                                <Setter Property="BorderColor" Value="{StaticResource PrimaryOrange}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <HorizontalStackLayout>
+                            <Image Source="pets_icon.png" Style="{StaticResource NavIconStyle}" />
+                            <Label Text="Manage Pets" Style="{StaticResource NavTextStyle}" />
+                        </HorizontalStackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="///ManagePets" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <!-- Appointments Nav -->
+                    <Frame Style="{StaticResource NavFrameStyle}">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding CurrentRoute}" Value="ManageAppointments">
+                                <Setter Property="BackgroundColor" Value="#FFE4CC" />
+                                <Setter Property="BorderColor" Value="{StaticResource PrimaryOrange}" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <HorizontalStackLayout>
+                            <Image Source="calendar_icon.png" Style="{StaticResource NavIconStyle}" />
+                            <Label Text="Appointments" Style="{StaticResource NavTextStyle}" />
+                        </HorizontalStackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="///ManageAppointments" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                    <BoxView HeightRequest="1" BackgroundColor="{StaticResource PrimaryOrange}" Opacity="0.1" Margin="15, 20" />
+
+                    <!-- Logout -->
+                    <Frame Style="{StaticResource NavFrameStyle}">
+                        <HorizontalStackLayout>
+                            <Image Source="exit.png" Style="{StaticResource NavIconStyle}" Opacity="0.5" />
+                            <Label Text="Sign Out" Style="{StaticResource NavTextStyle}" TextColor="#D32F2F" />
+                        </HorizontalStackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <VerticalStackLayout Grid.Row="1" Padding="20" BackgroundColor="#FFF0E0">
+                 <Label Text="{Binding AdminName, StringFormat='Logged in as: {0}'}" 
+                        FontSize="11" TextColor="#666666" Opacity="0.6" 
+                        HorizontalOptions="Center" FontFamily="PoppinsSemibold" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutContent>
+
+    <FlyoutItem Title="Dashboard" Route="AdminDashboard" FlyoutDisplayOptions="AsSingleItem">
+        <ShellContent ContentTemplate="{DataTemplate admin:AdminDashboard}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Manage Users" Route="ManageUsers" FlyoutDisplayOptions="AsSingleItem">
+        <ShellContent ContentTemplate="{DataTemplate admin:ManageUsers}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Manage Pets" Route="ManagePets" FlyoutDisplayOptions="AsSingleItem">
+        <ShellContent ContentTemplate="{DataTemplate adminpet:ManagePetsPage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Appointments" Route="ManageAppointments" FlyoutDisplayOptions="AsSingleItem">
+        <ShellContent ContentTemplate="{DataTemplate admin:ManageAppointments}" />
+    </FlyoutItem>
+
+</Shell>
